@@ -10,11 +10,6 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'Folders',
-      component: Folders
-    },
-    {
       path: '/folders',
       name: 'Folders',
       component: Folders

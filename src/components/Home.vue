@@ -3,6 +3,12 @@
 </template>
 
 <script>
+/**
+ * Home component described here
+ *
+ * @version 1.0.1
+ * @displayName Home
+ */
 export default {
   name: "Home"
 };

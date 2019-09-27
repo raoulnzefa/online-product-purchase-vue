@@ -1,68 +1,80 @@
 <template>
   <div>
-    <div>
-      <div>
-        <div>
-          <b-card-group deck v-for="(folder, index) in fileredProducts" :key="index">
-            <b-card no-body border-variant="light" align="left">
-              <p class="card-header capitalize">{{index}}</p>
-              <b-card-text>
-                <b-list-group>
-                  <b-list-group-item
-                    class="capitalize"
-                    v-for="(test, index) in folder"
-                    :key="index"
-                  >
-                    <span class="value-text-align">{{test.value}}</span>
-                    <span class="price-text-align">{{test.price | currency}}</span>
-                    <b-button-group class="b-button-group-align">
-                      <b-button variant="success" @click="addToCart(test)">Add to cart</b-button>
-                    </b-button-group>
-                  </b-list-group-item>
-                </b-list-group>
-              </b-card-text>
-            </b-card>
-          </b-card-group>
-        </div>
-      </div>
-    </div>
+    <h2>Folders</h2>
+    <b-card-group deck v-for="(folder, index) in getFilteredFolderProducts" :key="index">
+      <b-card no-body border-variant="light" align="left">
+        <p class="card-header capitalize">{{index}}</p>
+        <b-card-text>
+          <b-list-group>
+            <b-list-group-item
+              class="capitalize"
+              v-for="(folderItem, index) in folder"
+              :key="index"
+            >
+              <span class="value-text-align">{{folderItem.value}}</span>
+              <span class="price-text-align">{{folderItem.price | currency}}</span>
+              <b-button-group class="b-button-group-align">
+                <b-button variant="success" @click="addToCart(folderItem)">Add to cart</b-button>
+              </b-button-group>
+            </b-list-group-item>
+          </b-list-group>
+        </b-card-text>
+      </b-card>
+    </b-card-group>
   </div>
 </template>
 
 <script>
-import folders from "./json/folders.json";
+import foldersItem from "./json/folders.json";
 import { Store } from "../store/Store";
 
+/**
+ * Folder component
+ *
+ * @version 1.0.1
+ * @displayName Folders
+ */
 export default {
   name: "Folders",
   data() {
     return {
-      folderItems: folders
+      folderListItems: foldersItem
     };
   },
   computed: {
-    fileredProducts() {
-      const updatedQueryList = [];
-      const pages = [];
-      const obj = {};
-      for (const newquery of this.folderItems.excludes) {
-        for (const newquery1 of newquery) {
-          if (pages.indexOf(newquery1.property) < 0) {
-            pages.push(newquery1.property);
+    /**
+     * Gets filtered values based on exclude property
+     */
+    getFilteredFolderProducts() {
+      const filteredProductList = [];
+      const excludePropertyName = [];
+      let price = 1050;
+
+      /**
+       * Gets excludePropertyName array from exclude property
+       */
+      for (const excludePropertyGroup of this.folderListItems.excludes) {
+        for (const excludePropertyItem of excludePropertyGroup) {
+          if (excludePropertyName.indexOf(excludePropertyItem.property) < 0) {
+            excludePropertyName.push(excludePropertyItem.property);
           }
         }
       }
 
-      for (const query of this.folderItems.propertyGroups) {
-        for (const query1 of query.properties) {
-          for (const query2 of query1.options) {
-            for (const page of pages) {
-              if (query1.slug === page) {
-                if (query2.name && query2.name.nl) {
-                  updatedQueryList.push({
-                    key: page,
-                    value: query2.name.nl,
-                    price: 350
+      /**
+       * Gets filteredProductList based on exclude properties
+       */
+      for (const folderPropertyGroup of this.folderListItems.propertyGroups) {
+        for (const folderPropertyItem of folderPropertyGroup.properties) {
+          for (const folderPropertyOption of folderPropertyItem.options) {
+            for (const excludePropertyItemName of excludePropertyName) {
+              if (folderPropertyItem.slug === excludePropertyItemName) {
+                if (folderPropertyOption.name && folderPropertyOption.name.nl) {
+                  --price; // mock price for demo
+                  filteredProductList.push({
+                    key: excludePropertyItemName,
+                    value: folderPropertyOption.name.nl,
+                    price: price
                   });
                 }
               }
@@ -71,7 +83,10 @@ export default {
         }
       }
 
-      var cars = updatedQueryList.reduce((r, a) => {
+      /**
+       * Gets filtered values based on grouping by exclude property name
+       */
+      var groupedItemsByName = filteredProductList.reduce((r, a) => {
         const { key, value, price } = a;
         r[key] = [
           ...(r[key] || []),
@@ -82,10 +97,16 @@ export default {
         ];
         return r;
       }, {});
-      return cars;
+      return groupedItemsByName;
     }
   },
   methods: {
+    /**
+     * Add to cart.
+     *
+     * @param {object} product
+     * @public
+     */
     addToCart(product) {
       Store.addToCart(product);
     }
@@ -111,5 +132,8 @@ export default {
 .value-text-align {
   width: 60%;
   display: inline-block;
+}
+h2 {
+  text-align: center;
 }
 </style>

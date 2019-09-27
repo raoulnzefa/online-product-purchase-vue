@@ -1,11 +1,12 @@
 <template>
   <div>
-    <b-card-group deck v-for="(folder, index) in fileredProducts" :key="index">
+    <h2>Posters</h2>
+    <b-card-group deck v-for="(poster, index) in getFilteredposterProducts" :key="index">
       <b-card no-body border-variant="light" align="left">
         <p class="card-header capitalize">{{index}}</p>
         <b-card-text>
           <b-list-group>
-            <b-list-group-item class="capitalize" v-for="(test, index) in folder" :key="index">
+            <b-list-group-item class="capitalize" v-for="(test, index) in poster" :key="index">
               <span class="value-text-align">{{test.value}}</span>
               <span class="price-text-align">{{test.price | currency}}</span>
               <b-button-group class="b-button-group-align">
@@ -20,39 +21,56 @@
 </template>
 
 <script>
-import posters from "./json/posters.json";
+import postersItems from "./json/posters.json";
 import { Store } from "../store/Store";
 
+/**
+ * Posters component described here
+ *
+ * @version 1.0.1
+ * @displayName Posters
+ */
 export default {
   name: "Posters",
   data() {
     return {
-      posterItems: posters
+      posterListItems: postersItems
     };
   },
   computed: {
-    fileredProducts() {
-      const updatedQueryList = [];
-      const pages = [];
-      const obj = {};
-      for (const newquery of this.posterItems.excludes) {
-        for (const newquery1 of newquery) {
-          if (pages.indexOf(newquery1.property) < 0) {
-            pages.push(newquery1.property);
+    /**
+     * Gets filtered values based on exclude property
+     */
+    getFilteredposterProducts() {
+      const filteredProductList = [];
+      const excludePropertyName = [];
+      let price = 250;
+
+      /**
+       * Gets excludePropertyName array from exclude property
+       */
+      for (const excludePropertyGroup of this.posterListItems.excludes) {
+        for (const excludePropertyItem of excludePropertyGroup) {
+          if (excludePropertyName.indexOf(excludePropertyItem.property) < 0) {
+            excludePropertyName.push(excludePropertyItem.property);
           }
         }
       }
 
-      for (const query of this.posterItems.propertyGroups) {
-        for (const query1 of query.properties) {
-          for (const query2 of query1.options) {
-            for (const page of pages) {
-              if (query1.slug === page) {
-                if (query2.name && query2.name.nl) {
-                  updatedQueryList.push({
-                    key: page,
-                    value: query2.name.nl,
-                    price: 350
+      /**
+       * Gets filteredProductList based on exclude properties
+       */
+      for (const posterPropertyGroup of this.posterListItems.propertyGroups) {
+        for (const posterPropertyItem of posterPropertyGroup.properties) {
+          for (const posterPropertyOption of posterPropertyItem.options) {
+            for (const excludePropertyItemName of excludePropertyName) {
+              if (posterPropertyItem.slug === excludePropertyItemName) {
+                if (posterPropertyOption.name && posterPropertyOption.name.nl) {
+                  --price; // mock price for demo
+                  filteredProductList.push({
+                    key: excludePropertyItemName,
+                    value: posterPropertyOption.name.nl,
+                    price: price
                   });
                 }
               }
@@ -61,7 +79,10 @@ export default {
         }
       }
 
-      var cars = updatedQueryList.reduce((r, a) => {
+      /**
+       * Gets filtered values based on grouping by exclude property name
+       */
+      var groupedItemsByName = filteredProductList.reduce((r, a) => {
         const { key, value, price } = a;
         r[key] = [
           ...(r[key] || []),
@@ -72,17 +93,22 @@ export default {
         ];
         return r;
       }, {});
-      return cars;
+      return groupedItemsByName;
     }
   },
   methods: {
+    /**
+     * Add to cart.
+     *
+     * @param {object} product
+     * @public
+     */
     addToCart(product) {
       Store.addToCart(product);
     }
   }
 };
 </script>
-
 <style>
 .homeText {
   font-size: 35px;
@@ -102,5 +128,7 @@ export default {
   width: 60%;
   display: inline-block;
 }
+h2 {
+  text-align: center;
+}
 </style>
-};

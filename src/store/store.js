@@ -8,6 +8,11 @@ export const Store = new Vue({
     },
 
     computed: {
+        /**
+         * totalcost.
+         *
+         * @public
+         */
         totalCost() {
             return this.cart.reduce((accum, product) => {
                 return accum + product.price * product.quantity
@@ -16,6 +21,12 @@ export const Store = new Vue({
     },
 
     methods: {
+        /**
+         * Add to cart.
+         *
+         * @param {object} product
+         * @public
+         */
         addToCart(product) {
             let defaultQuantity = 1;
             const locationInCart = this.cart.findIndex(p => {
@@ -34,6 +45,12 @@ export const Store = new Vue({
             }
         },
 
+        /**
+         * remove to cart.
+         *
+         * @param {string} product
+         * @public
+         */
         removeFromCart(product) {
             const locationInCart = this.cart.findIndex(p => {
                 return p.details === product;

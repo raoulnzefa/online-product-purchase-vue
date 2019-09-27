@@ -10,7 +10,7 @@
         <router-view />
       </b-col>
       <b-col>
-        <h1>Shopping Cart</h1>
+        <h2>Shopping Cart</h2>
         <shopping-cart></shopping-cart>
         <p>
           <b>Total Cost: {{ totalCost | currency }}</b>
@@ -22,6 +22,13 @@
 
 <script>
 import { Store } from "./store/Store";
+
+/**
+ * App component
+ *
+ * @version 1.0.1
+ * @displayName App
+ */
 
 export default {
   name: "app",

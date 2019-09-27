@@ -28,3 +28,15 @@ npm test
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+Things to Highlight
+* Developed using Vue JS
+* Used Vue CLI, Components, Templates, Conditional and List Rendering
+* Vue Router implemented with State management using Vuex
+* Vue Bootstrap used
+* WebPack configured to get the deployable version
+* Unit testing configured
+* Responsive web design using fluid media query used for mobile, tab and browsers
+* Vue Filters used
+* tslint configured
+* Screenshot added for design

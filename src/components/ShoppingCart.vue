@@ -4,7 +4,7 @@
       <template v-slot:cell(price)="row">{{ row.item.price | currency }}</template>
 
       <template v-slot:cell(action)="row">
-        <b-button variant="success" size="sm" @click="addToCart(row.item.details)" class="mr-1">Add</b-button>
+        <b-button variant="success" size="sm" @click="addToCart(row.item)" class="mr-1">Add</b-button>
         <b-button variant="danger" size="sm" @click="removeFromCart(row.item.details)">Remove</b-button>
       </template>
     </b-table>

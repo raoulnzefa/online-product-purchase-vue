@@ -6,11 +6,11 @@
         <p class="card-header capitalize">{{index}}</p>
         <b-card-text>
           <b-list-group>
-            <b-list-group-item class="capitalize" v-for="(test, index) in card" :key="index">
-              <span class="value-text-align">{{test.value}}</span>
-              <span class="price-text-align">{{test.price | currency}}</span>
+            <b-list-group-item class="capitalize" v-for="(cardItem, index) in card" :key="index">
+              <span class="value-text-align">{{cardItem.details}}</span>
+              <span class="price-text-align">{{cardItem.price | currency}}</span>
               <b-button-group class="b-button-group-align">
-                <b-button variant="success" @click="addToCart(test)">Add to cart</b-button>
+                <b-button variant="success" @click="addToCart(cardItem)">Add to cart</b-button>
               </b-button-group>
             </b-list-group-item>
           </b-list-group>
@@ -71,7 +71,7 @@ export default {
                   --price; // mock price for demo
                   filteredProductList.push({
                     key: excludePropertyItemName,
-                    value: cardPropertyOption.name.nl,
+                    details: cardPropertyOption.name.nl,
                     price: price
                   });
                 }
@@ -85,11 +85,11 @@ export default {
        * Gets filtered values based on grouping by exclude property name
        */
       var groupedItemsByName = filteredProductList.reduce((r, a) => {
-        const { key, value, price } = a;
+        const { key, details, price } = a;
         r[key] = [
           ...(r[key] || []),
           {
-            value,
+            details,
             price
           }
         ];

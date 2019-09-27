@@ -11,7 +11,7 @@
               v-for="(folderItem, index) in folder"
               :key="index"
             >
-              <span class="value-text-align">{{folderItem.value}}</span>
+              <span class="value-text-align">{{folderItem.details}}</span>
               <span class="price-text-align">{{folderItem.price | currency}}</span>
               <b-button-group class="b-button-group-align">
                 <b-button variant="success" @click="addToCart(folderItem)">Add to cart</b-button>
@@ -73,7 +73,7 @@ export default {
                   --price; // mock price for demo
                   filteredProductList.push({
                     key: excludePropertyItemName,
-                    value: folderPropertyOption.name.nl,
+                    details: folderPropertyOption.name.nl,
                     price: price
                   });
                 }
@@ -87,11 +87,11 @@ export default {
        * Gets filtered values based on grouping by exclude property name
        */
       var groupedItemsByName = filteredProductList.reduce((r, a) => {
-        const { key, value, price } = a;
+        const { key, details, price } = a;
         r[key] = [
           ...(r[key] || []),
           {
-            value,
+            details,
             price
           }
         ];

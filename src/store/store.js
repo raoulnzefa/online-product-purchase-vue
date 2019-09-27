@@ -30,12 +30,12 @@ export const Store = new Vue({
         addToCart(product) {
             let defaultQuantity = 1;
             const locationInCart = this.cart.findIndex(p => {
-                return p.details === product.value;
+                return p.details === product.details;
             })
 
             if (locationInCart === -1) {
                 this.cart.push({
-                    details: product.value,
+                    details: product.details,
                     quantity: defaultQuantity,
                     price: product.price,
                     action: ''

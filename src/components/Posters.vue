@@ -1,31 +1,21 @@
 <template>
   <div>
-    <div>
-      <div>
-        <div>
-          <b-card-group deck v-for="(folder, index) in fileredProducts" :key="index">
-            <b-card no-body border-variant="light" align="left">
-              <p class="card-header capitalize">{{index}}</p>
-              <b-card-text>
-                <b-list-group>
-                  <b-list-group-item
-                    class="capitalize"
-                    v-for="(test, index) in folder"
-                    :key="index"
-                  >
-                    <span class="value-text-align">{{test.value}}</span>
-                    <span class="price-text-align">{{test.price | currency}}</span>
-                    <b-button-group class="b-button-group-align">
-                      <b-button variant="success" @click="addToCart(test)">Add to cart</b-button>
-                    </b-button-group>
-                  </b-list-group-item>
-                </b-list-group>
-              </b-card-text>
-            </b-card>
-          </b-card-group>
-        </div>
-      </div>
-    </div>
+    <b-card-group deck v-for="(folder, index) in fileredProducts" :key="index">
+      <b-card no-body border-variant="light" align="left">
+        <p class="card-header capitalize">{{index}}</p>
+        <b-card-text>
+          <b-list-group>
+            <b-list-group-item class="capitalize" v-for="(test, index) in folder" :key="index">
+              <span class="value-text-align">{{test.value}}</span>
+              <span class="price-text-align">{{test.price | currency}}</span>
+              <b-button-group class="b-button-group-align">
+                <b-button variant="success" @click="addToCart(test)">Add to cart</b-button>
+              </b-button-group>
+            </b-list-group-item>
+          </b-list-group>
+        </b-card-text>
+      </b-card>
+    </b-card-group>
   </div>
 </template>
 
@@ -114,15 +104,3 @@ export default {
 }
 </style>
 };
-</script>
-
-<style>
-.homeText {
-  font-size: 35px;
-  color: red;
-  text-align: center;
-}
-.card-header {
-  font-weight: bold;
-}
-</style>
